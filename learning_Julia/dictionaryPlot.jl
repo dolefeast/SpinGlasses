@@ -11,8 +11,9 @@ function distancesArray(nPoints)
         distances: An Array{Float}() object encoding the distances to each other point in the system. Kind of encases the topology.
     """
     distances = []
-    nPoints = nPoints-1
+    nPoints = nPoints
     distances = 1:div(nPoints,2)
+    distances
 end
 
 function pregenerateBondsList(nPoints, maxNumberOfBonds)

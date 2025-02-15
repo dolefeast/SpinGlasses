@@ -5,6 +5,16 @@ function std(arr)
     sqrt( sum( (arr .- avg) .^ 2 ) / (length(arr) - 1))
 end
 
+function errorPlot(y, color=:black)
+    yMean = y[1]
+    yTop = y[1] .+ y[2] ./2
+    yBot = y[1] .- y[2] ./2
+
+    plot!(yMean, linecolor=color, legend=false)
+    plot!(yTop, linecolor=color, ls=:dash, legend=false)
+    plot!(yBot, linecolor=color, ls=:dash, legend=false)
+end
+
 function correlationFunction(nPoints, connectionsArray)
     """
     The two-point correlation function of a connection Array
@@ -15,15 +25,22 @@ function correlationFunction(nPoints, connectionsArray)
     Returns
     correlationFunction = Array{Int64}[nPoints]
     """
-    histogram = [0 for _ in 1:nPoints]
+    nBonds = length(connectionsArray)
+    histogram = [0 for _ in 1:div(nPoints, 2)]
     for (startingPoint, endingPoint) in connectionsArray
-        distance = min(abs(endingPoint-startingPoint), abs(startingPoint+nPoints-endingPoint))  
+        if startingPoint > endingPoint
+            c = endingPoint
+            endingPoint = startingPoint
+            startingPoint = c
+        end
+        distance = min(endingPoint - startingPoint, startingPoint + nPoints - endingPoint)  
+        #print( "\nStarting point: ", startingPoint, ", ending point: ", endingPoint, "\n\tDistance: ", distance)
         histogram[distance] += 1
     end
-    histogram
+    histogram ./ nBonds
 end
 
-function averageCorrelationFunction(nPoints, maxNumberOfBonds, interactionExponent, connectionsArrayMethod, nRealizations = 1000)
+function averageCorrelationFunction(nPoints, maxNumberOfBonds, interactionExponent, connectionsArrayMethod, nRealizations = 10000)
     """
     Parameters
         nPoints: Int64, the number of points to consider in the array
@@ -34,9 +51,10 @@ function averageCorrelationFunction(nPoints, maxNumberOfBonds, interactionExpone
     Returns:
         averageSTDCorrelationFunction = [averageCorrelationFunction, stdCorrelationFunction]
     """
-    realizationsCorrelationFunction = [ [ 0 for _ in 1:nRealizations ] for _ in 1:nPoints ]
-    averageCorrelationFunction = [ 0. for _ in 1:nPoints ]
-    stdCorrelationFunction = [ 0. for _ in 1:nPoints ]
+    maxDistance = div(nPoints, 2)
+    realizationsCorrelationFunction = [ [ 0. for _ in 1:nRealizations ] for _ in 1:maxDistance ]
+    averageCorrelationFunction = [ 0. for _ in 1:maxDistance ]
+    stdCorrelationFunction = [ 0. for _ in 1:maxDistance ]
     for realization in 1:nRealizations
         connect = connectionsArrayMethod(nPoints, maxNumberOfBonds, interactionExponent)
         cF = correlationFunction(nPoints, connect)
@@ -45,9 +63,25 @@ function averageCorrelationFunction(nPoints, maxNumberOfBonds, interactionExpone
         end
     end
 
-    for i in 1:nPoints
+    for i in 1:maxDistance
          averageCorrelationFunction[i] = mean(realizationsCorrelationFunction[i])
          stdCorrelationFunction[i] = std(realizationsCorrelationFunction[i])
     end
     (averageCorrelationFunction, stdCorrelationFunction)
+end
+
+function connectionSetToConnectivityArrayConversion(nPoints, connectionSet)
+    connectivityArrayUnsorted = [ [] for _ in 1:nPoints ]
+    connectivityArraySorted = [ [] for _ in 1:nPoints ]
+    for (startingPoint, endingPoint) in connectionSet
+        append!(connectivityArrayUnsorted[startingPoint], endingPoint)
+        append!(connectivityArrayUnsorted[endingPoint], startingPoint)
+       end
+        
+       for (i, connection) in enumerate(connectivityArrayUnsorted)
+           print(connection, "\n")
+           connectivityArraySorted[i] = sort(connection)
+       end
+
+    connectivityArraySorted    
 end
