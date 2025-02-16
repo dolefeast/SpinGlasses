@@ -79,9 +79,9 @@ function connectionSetToConnectivityArrayConversion(nPoints, connectionSet)
        end
         
        for (i, connection) in enumerate(connectivityArrayUnsorted)
-           print(connection, "\n")
            connectivityArraySorted[i] = sort(connection)
        end
 
     connectivityArraySorted    
 end
+

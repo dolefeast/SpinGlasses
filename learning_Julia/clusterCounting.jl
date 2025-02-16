@@ -14,23 +14,32 @@ function clusterIdentification(connectivityArray)
         """
 
     nPoints = length(connectivityArray)
-    clusterTag = 1
-    clustering = [ 0 for _ in 1:nPoints ]
-       
-    change = false
-    for (i,outgoingArray) in enumerate(connectivityArray)
-        if clustering[i] == 0
-            clustering[i] = clusterTag
-            clusterTag += 1
-        end
-        for (j, connection) in enumerate(outgoingArray)
-            if clustering[connection] != 0
+    visited = Set{Int}()
+    clusters = []
+
+    function dfs(node, cluster)
+        stack = [ node ]
+        while !isempty(stack)
+            curr = pop!(stack)
+            if !(curr in visited)
+                push!(visited, curr)
+                push!(cluster, curr)
+                for neighbor in connectivityArray[curr]
+                    if !(neighbor in visited)
+                        push!(stack, neighbor)
+                    end
+                end
             end
-            clustering[connection] = clustering[i]
-
         end
-        print(i, ", ", clustering, "\n")
+        cluster
     end
-    clustering
-end
 
+        for i in 1:nPoints
+            if !(i in visited)
+                cluster = Set{Int}()
+                cluster = dfs(i, cluster)
+                append!(clusters, [cluster])
+            end
+        end
+        length(clusters)
+end
