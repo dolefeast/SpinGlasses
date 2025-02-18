@@ -11,7 +11,6 @@ function distancesArray(nPoints)
         distances: An Array{Float}() object encoding the distances to each other point in the system. Kind of encases the topology.
     """
     distances = []
-    nPoints = nPoints
     distances = 1:div(nPoints,2)
     distances
 end
@@ -122,47 +121,6 @@ end
 function firstElement(arr)
     arr[1]
 end
-
-function identifyGroups(nPoints,connectionsArray)
-    """
-    Given a connections array identify each particle with a group.
-    Parameters:
-        nPoints: the amount of particles in the system
-        connectionsArray: Which particles are connected to which
-    Returns:
-        group # an array of integers of length nPoints so that group[i] is the group to which the particle i belongs
-    
-    Both nPoints and connectionsArray must be provided as connectionsArray does not encode how many particles there are in the system. e.g. consider the system constituted by 5000 particles and just 1 bond.
-    The algorithm goes: 
-        1. Assign each particle a 0. Zero means no belonging to any group
-        2. The first particle gets assigned a 1. Every particle connected to this particle is also assigned a 1.
-        3. Go to particle 2. If this particle has no asigned group, asign it group 2, otherwise, leave as is. Asign to every particle connected to particle 2 its group.
-    """
-    connectionsArray = sort(connectionsArray, by=firstElement)
-
-    groups  = zeros(Int32, nPoints)
-    groupCount = 1
-    unassignedParticles = 1:nPoints
-    for (startingPoint, endingPoint) in connectionsArray
-        if groups[startingPoint] == 0 && groups[endingPoint] == 0
-            groups[startingPoint] = groupCount
-            groups[endingPoint] = groupCount
-            groupCount += 1
-        elseif groups[startingPoint] != 0 && groups[endingPoint] == 0
-            groups[endingPoint] = groups[startingPoint]
-        elseif groups[startingPoint] == 0 && groups[endingPoint] != 0
-            groups[startingPoint] = groups[endingPoint] 
-        elseif groups[startingPoint] != 0 && groups[endingPoint] != 0
-            print("Starting point ", startingPoint, ", group: ", groups[startingPoint], "\n")
-            print("ending point ", endingPoint, ", group: ", groups[endingPoint], "\n")
-            if groups[startingPoint] !=  groups[endingPoint]
-                print("The groupings so far: ", groups)
-                throw(DomainError)
-            end
-        end
-    end
-end
-
 
 function probabilityConnectionsArray(nPoints, p=1)
     """
