@@ -1,0 +1,25 @@
+\section{Introduction}
+A (classical) spin system with n particles is governed by the Edwards-Anderson Hamiltonian 
+\begin{align}
+	H = -\sum^N_{1\le j < i} J_{ij} s_i s_j,
+	\label{eq:connected-Hamiltonian}
+\end{align}
+with $J_{ij}$ the matrix elements of a 2-dimensional symmetric matrix, dictating the interactions between the particle at the site $i$ and the particle at the site $j$, and $s_i$ is the spin of the particle at the site $i$.
+In the fully connected version, the interactions are given between every two spin pairs decaying as a power law 
+\begin{align}
+	J_{ij} \sim \frac{\phi_{ij}}{r^{1+\sigma}_{ij}},
+\end{align}
+following notation from \cite{Beyer2012}, $r_{ij} = \lvert \textbf{r}_i - \textbf{r}_j\rvert$ and $\phi_{ij}$ is a standard normal random variable. The spins are organized in a 1-dimensional chain with periodic boundary conditions.
+
+\subsection{Dilute spin models}
+Simulations of these systems are very computationaly expensive, as at each `time-step', calculations are of complexity $\mathcal{O}(N^2)$. 
+	A usual simplification of such problems is the Ising model, in which the sum in \eqref{eq:connected-Hamiltonian} is performed only over nearest neighbors, which only approximates short-range interactions. The Ising Hamiltonian is \cite{Luijten2006} 
+\begin{align*}
+	\mathcal{H}_{\text{Ising}} = - J \sum_{\langle ij \rangle}^{N} s_i s_j
+,\end{align*}
+where $J$ is now a constant.
+This model is in a sense uninteresting, as it has been shown that 1-dimensional spin glasses with finite non-zero $J_{ij}$ (e.g. the Ising model) does not present phase transitions \cite{Rushbrooke_Ursell_1948}. Long range interactions however, have been found to present phase transitions \cite{Kotliar1983}.
+
+In order to study long range interactions and avoid the $\mathcal{O}(N^2)$ computational cost of computing every interaction, a dilute spin model is used \cite{Leuzzi2008}.
+In this model, the interaction $J_{ij}$ is set distance independent, but the probability of having an interaction decays with $
+	\frac{1}{r^\sigma_{ij}}.$ The coordination number is fixed, and therefore so is the total number of bonds $N_l \leq \frac{N(N-1)}{2}$.

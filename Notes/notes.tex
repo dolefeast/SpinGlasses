@@ -1,14 +1,17 @@
 \documentclass[a4paper]{article}
 
-
 \usepackage[]{pgf}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{graphicx}
 \usepackage{listings}
 \usepackage[english]{babel}
 \usepackage{amsmath, amssymb}
-
+\usepackage[usenames,dvipsnames]{xcolor}
 
 % figure support
 \usepackage{import}
@@ -21,6 +24,28 @@
 	\import{./figures/}{#1.pdf_tex}
 }
 
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,immutable,import,importall,if,in,%
+      macro,module,otherwise,quote,return,switch,true,try,type,typealias,%
+      using,while,begin},%
+   sensitive=true,%
+   alsoother={\$},%
+   morecomment=[l]\#,%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[s]{"}{"},%
+   morestring=[m]{'}{'},%
+}[keywords,comments,strings]%
+
+\lstset{%
+    language         = Julia,
+    basicstyle       = \ttfamily,
+    keywordstyle     = \bfseries\color{blue},
+    stringstyle      = \color{magenta},
+    commentstyle     = \color{ForestGreen},
+    showstringspaces = false,
+}
+
 \title{Spin glasses}
 \author{Santiago Sanz Wuhl}
 
@@ -28,58 +53,21 @@
 
 \DeclareUnicodeCharacter{2212}{-}
 
-
 \begin{document}
 \maketitle
 
-\section{Introduction}
-A (classical) spin system with n particles is governed by the Hamiltonian 
-\begin{align}
-	H = \sum_{i=1}^{N} \sum_{1\le j < i} A_{ij} s_i s_j,
-\end{align}
-where $A_{ij}$ are the matrix elements of a 2-dimensional symmetric matrix, measuring the strength of the interactions between the particle at the site $i$ and the particle at the site $j$, and $s_i$ is the spin of the particle at the site $i$.
-When only considering long-range interactions, 
-\begin{align}
-	A_{ij} = r_{ij}^{-\sigma}.
-\end{align}
+\input{sections/introduction.tex}
+\input{sections/methods.tex}
+\input{sections/results.tex}
 
-This interaction is however very computationaly expensive. These systems are usually approximated  (for example in the Ising model) via the nearest-neighbors approximation\footnote{This expression is valid only for 1-dimensional setups. The expression for higher dimensions is similar.}, i.e. 
-\begin{align}
-	A_{ij}=
-	\begin{cases}
-		1 & j = i \pm 1\\
-		0 & \text{else}
-	\end{cases}.
-\end{align}
+\input{sections/literature-notes.tex}
 
-To avoid the computational expense of calculating the $\frac{N(N-1)}{2}$ interactions per iteration we state the following approximation: the interaction strength of any two particles is always 1, independently of the  distance separating them, but not every particle interacts with every particle. We distribute a fixed $N_l$ amount of interactions  among the particles, and the probability that two particles are interacting is governed by $r_{ij}^{-\sigma}$.
+\newpage
+\appendix
+\input{appendices/connection-set-algorithm.tex}
 
-\section{Methods}
-\subsection{Random number generation}
-
-The core of these calculations is the Walker's Alias random number generating algorithm. This algorithm rolls an unfair $m$ sided die with complexity $\mathcal{O}(m)$.
-
-\subsection{Two different algorithms}
-
-We discussed two different algorithms to generate the matrix $A_{ij}$ (which is not anymore a matrix, it is only the set of 1 valued elements)
-
-\paragraph{Set algorithm}
-This algorithm draws random bonds between any two particles and when the number of bonds reaches $N_l$, it stops.
-Each draw of a bond rolls two dice: The first die draws a uniformly distributed integer $n$ from 1 to N and chooses the starting particle. The second die draws a random integer from 1 to $\left\lfloor \frac{N}{2} \right\rfloor$ where the probability of drawing a number number $m \in [1, \left\lfloor \frac{N}{2} \right\rfloor]$ is 
-\begin{align}
-	P_m = m^{-\sigma}.
-\end{align}
-This, again only draws "forward" bonds.
-The drawn bond is then $\{n, \text{mod}\left(n+m,  N  \right) \}$. This avoids having to generate the Alias Table at each iteration
-
-The algorithm goes as follows
-\begin{lstlisting}
-Parameters: N, N_l, sigma
-
-# First particle choice AliasTable
-uniformAliasTable = AliasTable(ones(N))	
-# Second particle choice AliasTable
-distanceAliasTable = AliasTable( 1 ./ 1:div(N, 2)  .^ sigma )
-\end{lstlisting}
+\newpage
+\bibliographystyle{abbrvnat}
+\bibliography{notes}
 
 \end{document}

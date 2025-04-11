@@ -1,0 +1,35 @@
+\begin{lstlisting}
+
+
+using AliasTable
+
+function generateConnectionsSet(N, N_l, sigma)
+
+    distancesArray = 1:(N-1)
+    chooseAT = AliasTable(ones(nPoints))
+    distanceAliasTable = AliasTable(
+   		 1 ./ distancesArray .^ (1+sigma)
+		 )
+
+    # Stores connections
+    connectionsSet = Set() 
+
+    # Stops if N_l is reached
+    while len(connectionsSet) < N_l
+	# Uniform distribution
+        particle1Choice = rand(chooseAT, 1)[1]
+
+	# Rolls integer m with probability P_m = m^(-(1+sigma))
+        particle2Addition = rand(distanceAliasTable, 1)[1]
+        particle2Choice = (particle2Addition + particle1Choice) % N
+
+	# Stores the sampled connection. Since sets do not repeat elements 
+	# and are also unordered, if the connection already existed,
+	# it will not be stored.
+        push!(connectionsSet, 
+		Set([particle1Choice, particle2Choice]))
+    end
+    connectionsSet
+end
+
+\end{lstlisting}

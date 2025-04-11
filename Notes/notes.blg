@@ -1,0 +1,68 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: notes.aux
+The style file: abbrvnat.bst
+Database file #1: notes.bib
+You're missing a field name---line 82 of file notes.bib
+ : @article{Kotliar1983, 
+ :                       %Phase transition of long range interactions
+I'm skipping whatever remains of this entry
+You're missing a field name---line 97 of file notes.bib
+ : @article{Leuzzi2008,
+ :                     ,
+I'm skipping whatever remains of this entry
+Warning--to sort, need author or key in Kotliar1983
+Warning--to sort, need author or key in Leuzzi2008
+Warning--empty author in Kotliar1983
+Warning--empty title in Kotliar1983
+Warning--empty journal in Kotliar1983
+Warning--empty year in Kotliar1983
+Warning--empty year in Kotliar1983
+Warning--empty author in Leuzzi2008
+Warning--empty title in Leuzzi2008
+Warning--empty journal in Leuzzi2008
+Warning--empty year in Leuzzi2008
+Warning--empty year in Leuzzi2008
+Warning--can't use both author and editor fields in Luijten2006
+You've used 9 entries,
+            2773 wiz_defined-function locations,
+            668 strings with 6332 characters,
+and the built_in function-call counts, 3800 in all, are:
+= -- 351
+> -- 150
+< -- 6
++ -- 54
+- -- 45
+* -- 326
+:= -- 552
+add.period$ -- 35
+call.type$ -- 9
+change.case$ -- 38
+chr.to.int$ -- 9
+cite$ -- 33
+duplicate$ -- 183
+empty$ -- 344
+format.name$ -- 56
+if$ -- 802
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 9
+newline$ -- 61
+num.names$ -- 28
+pop$ -- 93
+preamble$ -- 1
+purify$ -- 33
+quote$ -- 0
+skip$ -- 134
+stack$ -- 0
+substring$ -- 156
+swap$ -- 18
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 94
+warning$ -- 13
+while$ -- 30
+width$ -- 0
+write$ -- 134
+(There were 2 error messages)

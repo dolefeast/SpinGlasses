@@ -1,0 +1,73 @@
+\section{Miscellaneous notes}
+
+\paragraph{Notes on Monte Carlo algorithms}
+Given a partition function 
+\begin{align}
+	Z = \sum_s \exp{(-i\beta E_s)},
+\end{align}
+the calculation of thermodynamic observables is extremely computationally expensive, as one has to integrate over the whole phase space.
+To avoid this, the Monte Carlo method of integration is used, based on the idea of trial and error, from Markov chains. The key characteristic of these chains is that each element \textbf{only} depends on the previous element.
+
+Starting from a configuration $s_i$ with a non vanishing Boltzmann factor $p_i$, a new trial configuration $s_j$ is created with Boltzmann factor $p_j$. 
+From each state $s_i$ to $s_j$ there is a transition probability represented by a transition matrix $\pi_{ij}$. One looks for the transition matrix yielding the equilibrium distribution $p_j$, so that 
+\begin{align}
+	\sum_i p_i \pi_{ij} = p_j.
+	\label{eq:equilibrium-condition}
+\end{align}
+One looks for the solutions $\pi_{ij}$ by imposing the condition of \textit{microscopic reversibility} or \textit{detailed balance}
+\begin{align}
+	p_i \pi_{ij} = p_j \pi_{ji}.
+	\label{eq:microscopic-reversibility}
+\end{align}
+Equations \eqref{eq:equilibrium-condition} and \eqref{eq:microscopic-reversibility} are equivalent if
+\begin{align}
+	\sum_i \pi_{ji} = 1.
+\end{align}
+We split each $\pi_{ij}$ as the product of an \textit{a priori} transition probability $\alpha_{ij}$ of generating $s_j$ from $s_i$ and an acceptance probability $P_{ij}$ of accepting $s_j$ as the new state. We thus write \eqref{eq:microscopic-reversibility} as 
+\begin{align}
+	p_i \alpha_{ij} P_{ij} = p_j \alpha_{ji} P_{ji}.
+\end{align}
+If $\alpha$ is symmetric, 
+\begin{align}
+	\frac{P_{ij}}{P_{ji}} = \exp[ - \beta ( E_j - E_i)].
+\end{align}
+This does not uniquely define $P$. \cite{Metropolis1953} suggests 
+\begin{align}
+	\frac{P_{ij}}{P_{ji}} = 
+	\begin{cases}
+		\exp{-\beta (E_j - E_i)} & E_j > E_i \\
+		1 & E_j \leq E_i.
+		\end{cases}
+\end{align}
+This way, thermodynamic averages are calculated by generating a sequence of $M$ configurations $\{ s_1, \ldots s_M \}$, 
+\begin{align}
+	\langle A \rangle \approx \frac{1}{M} \sum_{n=1 }{M}A_n.
+\end{align}
+
+The Ising model is modelled by the Hamiltonian
+\begin{align}
+	\mathcal{H}_\text{Ising} = -J \sum_{\langle ij \rangle} s_i s_j.
+\end{align}),
+where the sum runs over all pairs of neares neighbors, coupled via ferromagnetic coupling with strength $J>0$. Local trial moves correspond to flipping single spins.
+
+\cite{PhysRevLett.58.86} changes the Monte carlo
+algorithm from a ``single-spin flip''. The recipe of this algorithm is as follows:
+
+\begin{enumerate}
+	\item A ``bond'' is formed between every pair of nearest neighbors,aligned with a probability $p_{ij} = 1 - \exp(-i\beta J)$, with $J$ the coupling constant.
+	\item Connected bonds (directly or indirectly) belong to the same cluster\footnote{They supposedly have the same spin? From \cite{Luijten2006}: ``The bond assignment procedure divides the system into clusters of \textit{parallel} spins (a so-called cluster decomposition) [...] two spins of the same sign need not belong to the same cluster, even if these spins are adjacent on the lattice. }
+	\item Spins in each cluster are flipped collectively with probability $\frac{1}{2}$. 
+	\item Delete all bonds, perform step (1) again.
+\end{enumerate}
+
+This algorithm suppresses the dynamic slowing down near critical points. Near critical points (continuous phase transitions), the relaxation time of thermodynamic properties depends on the correlation length 
+\begin{align}
+	\tau \propto \xi ^z,
+\end{align}
+with $z\approx2$ the so-called dynamical critical exponent. The correlation length diverges as 
+\begin{align}
+	\xi \propto \lvert T - T_c \rvert ^{-\nu},
+\end{align}
+with $\nu > 0 $. As $T\to T_c$, we encounter a \textit{critical slowing down}. Larger systems with larger correlation lengths present larger correlation times, and it therefore becomes increasingly difficult to generate statistically independent configurations. 
+
+The above mentioned algorithm destroys nonlocal correlations, and the dynamical exponent $z$ is lowered to a much smaller value. 

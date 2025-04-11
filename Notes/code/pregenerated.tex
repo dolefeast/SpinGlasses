@@ -1,0 +1,49 @@
+\begin{lstlisting}
+function walkerAliasPregeneratedConnectionsArray(nPoints,
+		maxNumberOfBonds, interactionExponent)
+    # My algorithm randomly chooses a point, 
+    # then assigns to this point an addition index,
+    # so that the addition is given by the interaction exponent.
+    #
+    # 1. Generate a bondsList: How many bonds 
+    #       	each node is going to get connected to
+    # 2. Go through each node and generate 
+    # 		as many bonds as the bondsList says
+    #           2.1. These bonds only go "forward"i.e. to the 
+    #           	next nPoints/2 nodes
+    # 3. Before each bonding, reinitialize the AliasTable,
+    # 		so that the probability of 
+    # 		bonding with an already bonded node is 0.
+
+    # An nPoints long array which contains the information of how many
+    # bonds each node has
+    nOfBondsList = pregenerateBondsList(nPoints, maxNumberOfBonds)
+    bondsList = []
+
+    distanceAliasTable = AliasTable(
+    	1 ./ distancesArray(nPoints) .^ interactionExponent
+    )
+
+    for (particle1, nBonds) in enumerate(nOfBondsList)
+	if nBonds == 0
+	    continue
+	end
+	particle1BondsList = []
+	while length(particle1BondsList) < nBonds
+	    particle2 = rand(distanceAliasTable, 1)[1] + particle1
+	    if particle2 > nPoints
+		particle2 = particle2%nPoints
+	    end
+	    if particle2 in particle1BondsList
+		continue
+	    end
+	    append!(bondsList, [ sort([ particle1, particle2 ]) ])
+	    append!(particle1BondsList, (particle2))
+	end
+    end
+
+    bondsList
+end
+
+\end{lstlisting}
+
