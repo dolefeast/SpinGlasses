@@ -1,15 +1,21 @@
 module calculations
 
+include("metropolis.jl")
+
+using .metropolis
+
 using AliasTables
 using Plots
 
 global nPoints = 100;
 global nBonds = 100;
 global sigma = 1.;
+global T = 1.;
 
 export nPoints
 export nBonds;
 export sigma;
+export T;
 
 function mean(arr)
 	avg = sum(arr)/length(arr)
@@ -29,7 +35,7 @@ function addCirclePlot(h, k, r)
     """
     Plots a circle of radius r and center at (h, k)
     """
-    plot!(circleShape(h,k,r), seriestype=[:shape], lw=0.5,
+    return plot!(circleShape(h,k,r), seriestype=[:shape], lw=0.5,
 		  c = :blue, linecolor = :black, legend=false, fillalpha = 0., aspect_ratio = 1, grid=false, ticks=false, axes=false, axis=([], false))
 end # function
 
@@ -68,7 +74,7 @@ function drawCircleAndPoints(nPoints::Int64)
     Draws the unit circle, and nPoints evenly distributed along it.
     Returns the list of cartesian coordinates of each of the points
     """
-    addCirclePlot(0,0,1)
+    p = addCirclePlot(0,0,1)
     points_θ = LinRange(π/2, 5π/2, nPoints + 1);
     pointsCartesian = @. pol2car(1, points_θ);
 
@@ -159,21 +165,18 @@ function correlationFunctionStatistics(realizations)
 end
 
 
-function bigPlotFunction()
+function bigPlotFunction(connectionSet )
     """
     Plots connections randomly generated
     """
-    plot()
-
-	connectionSet = generateConnectionSet()
-
-    addCirclePlot(0, 0, 1)
+	p = plot()
+	plot!(p, addCirclePlot(0, 0, 1))
     pointsCartesian = drawCircleAndPoints(nPoints)
     bondsCartesian = connectionsCartesian(pointsCartesian, connectionSet)
     for bond in bondsCartesian
-        plot!(bond, color= :purple)
+         p = plot!(p, bond, color= :purple)
         end
-	connectionSet
+	p
 end # function
 
 function clusterIdentification(connectivityArray)
@@ -286,7 +289,9 @@ function clusterCountStatistics(realizations::Int64=100)
 		connections = generateConnectionSet(true)	
 		clusters = clusterIdentification(connections)
 		nClusters[realization] = length(clusters)
-	end #for
+	end # for
 	mean(nClusters), std(nClusters)./sqrt(realizations) 
-end # function
+	end # function
+
+
 end # module
