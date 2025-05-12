@@ -173,9 +173,9 @@ function bigPlotFunction(connectionSet )
 	plot!(p, addCirclePlot(0, 0, 1))
     pointsCartesian = drawCircleAndPoints(nPoints)
     bondsCartesian = connectionsCartesian(pointsCartesian, connectionSet)
-    for bond in bondsCartesian
+    for bond in bondsCartesia
          p = plot!(p, bond, color= :purple)
-        end
+    end
 	p
 end # function
 

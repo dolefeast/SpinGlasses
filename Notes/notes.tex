@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
+\usepackage{mathtools}
 \usepackage{hyperref}
 \usepackage{natbib}
 \usepackage{subcaption}
@@ -22,6 +23,11 @@
 \newcommand{\incfig}[1]{%
 	\def\svgwidth{\columnwidth}
 	\import{./figures/}{#1.pdf_tex}
+
+}
+
+\newcommand{\abs}[1]{
+	\lvert #1 \rvert
 }
 
 \lstdefinelanguage{Julia}%
@@ -46,7 +52,7 @@
     showstringspaces = false,
 }
 
-\title{Spin glasses}
+\title{Long range Ising model}
 \author{Santiago Sanz Wuhl}
 
 \pdfsuppresswarningpagegroup=1
@@ -60,7 +66,9 @@
 \input{sections/methods.tex}
 \input{sections/results.tex}
 
-\input{sections/literature-notes.tex}
+
+%\newpage
+%\input{sections/literature-notes.tex}
 
 \newpage
 \appendix
