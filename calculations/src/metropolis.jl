@@ -38,3 +38,4 @@ function evolve(connections::Vector{Vector{Int64}}, spins::Vector{Int64}, realiz
 
 end # function
 end # module
+

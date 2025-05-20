@@ -98,10 +98,11 @@ function generateConnectionSet(arrayFormat::Bool=false)
 	if nBonds >div( nPoints * (nPoints - 1) , 2)
 		error("nBonds > nPoints * (nPoints - 1) / 2")
 	end
-
-
+	
+	points = 1:(nPoints - 1)
+	distance = min.( points, div(nPoints, 2), nPoints .- points) 
     startingPointAT = AliasTables.AliasTable(ones(nPoints))
-	distanceAliasTable = AliasTables.AliasTable((1 ./ 1:(nPoints-1)) .^ (1+sigma))
+	distanceAliasTable = AliasTables.AliasTable((1 ./ float.(distance) .^ (1+sigma)))
     connectionsArray = Set()
 
     while length(connectionsArray) < nBonds
@@ -173,7 +174,7 @@ function bigPlotFunction(connectionSet )
 	plot!(p, addCirclePlot(0, 0, 1))
     pointsCartesian = drawCircleAndPoints(nPoints)
     bondsCartesian = connectionsCartesian(pointsCartesian, connectionSet)
-    for bond in bondsCartesia
+    for bond in bondsCartesian
          p = plot!(p, bond, color= :purple)
     end
 	p
