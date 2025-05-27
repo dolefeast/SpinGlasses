@@ -1,4 +1,4 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{7}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -8,13 +8,19 @@
 \bibitem[Ising(1925)]{ising1925beitrag}
 E.~Ising.
 \newblock Beitrag zur theorie des ferromagnetismus.
-\newblock \emph{Zeitschrift f{\"u}r Physik}, 31\penalty0 (1):\penalty0
-  253--258, 1925.
+\newblock \emph{Zeitschrift f{\"u}r Physik}, 31\penalty0 (1):\penalty0 253--258, 1925.
+
+\bibitem[Janke et~al.(2023)Janke, Christiansen, and Majumder]{Janke2023}
+W.~Janke, H.~Christiansen, and S.~Majumder.
+\newblock The role of magnetization in phase-ordering kinetics of the short-range and long-range ising model.
+\newblock \emph{The European Physical Journal Special Topics}, 232\penalty0 (11):\penalty0 1693--1701, 2023.
+\newblock ISSN 1951-6401.
+\newblock \doi{10.1140/epjs/s11734-023-00882-w}.
+\newblock URL \url{https://doi.org/10.1140/epjs/s11734-023-00882-w}.
 
 \bibitem[Kamiński(2022)]{setTime}
 B.~Kamiński, 2022.
-\newblock URL
-  \url{"https://www.juliabloggers.com/set-vs-vector-lookup-in-julia-a-closer-look/}.
+\newblock URL \url{"https://www.juliabloggers.com/set-vs-vector-lookup-in-julia-a-closer-look/}.
 
 \bibitem[Luijten(2006)]{Luijten2006}
 E.~Luijten.
@@ -24,12 +30,10 @@ E.~Luijten.
 \newblock \doi{10.1007/3-540-35273-2_1}.
 \newblock URL \url{https://doi.org/10.1007/3-540-35273-2_1}.
 
-\bibitem[Metropolis et~al.(1953)Metropolis, Rosenbluth, Rosenbluth, Teller, and
-  Teller]{Metropolis1953}
+\bibitem[Metropolis et~al.(1953)Metropolis, Rosenbluth, Rosenbluth, Teller, and Teller]{Metropolis1953}
 N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller.
 \newblock Equation of state calculations by fast computing machines.
-\newblock \emph{The Journal of Chemical Physics}, 21\penalty0 (6):\penalty0
-  1087--1092, 06 1953.
+\newblock \emph{The Journal of Chemical Physics}, 21\penalty0 (6):\penalty0 1087--1092, 06 1953.
 \newblock ISSN 0021-9606.
 \newblock \doi{10.1063/1.1699114}.
 \newblock URL \url{https://doi.org/10.1063/1.1699114}.
@@ -43,11 +47,9 @@ R.~H. Swendsen and J.-S. Wang.
 
 \bibitem[Walker(1974)]{Walker1974}
 A.~Walker.
-\newblock New fast method for generating discrete random numbers with arbitrary
-  frequency distributions.
+\newblock New fast method for generating discrete random numbers with arbitrary frequency distributions.
 \newblock \emph{Electronics Letters}, 10:\penalty0 127--128, 1974.
 \newblock \doi{10.1049/el:19740097}.
-\newblock URL
-  \url{https://digital-library.theiet.org/doi/abs/10.1049/el%3A19740097}.
+\newblock URL \url{https://digital-library.theiet.org/doi/abs/10.1049/el%3A19740097}.
 
 \end{thebibliography}
