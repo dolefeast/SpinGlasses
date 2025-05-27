@@ -89,9 +89,9 @@ function plotm2(m2stats, flipsPlot)
     savefig("figures/m2Runs/T_$(T)_nPoints_$(calculations.nPoints)_nBonds_$(calculations.nBonds)_sigma_$(calculations.sigma).pdf")
 end
 
-function evolveAndPlot(params, nCurves, flips, downsizeFactor)
+function evolveAndPlot(params, nCurves=50, flips=100000, downsizeFactor=100)
     nPoints, nBonds, sigma, T = params
-        
+
     calculations.nPoints = nPoints
     calculations.nBonds = nBonds
     calculations.sigma = sigma
