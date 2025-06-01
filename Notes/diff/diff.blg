@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: diff.aux
+The style file: abbrvnat.bst
+Database file #1: notes.bib
+You're missing a field name---line 82 of file notes.bib
+ : @article{Kotliar1983, 
+ :                       %Phase transition of long range interactions
+I'm skipping whatever remains of this entry
+You're missing a field name---line 97 of file notes.bib
+ : @article{Leuzzi2008,
+ :                     ,
+I'm skipping whatever remains of this entry
+You've used 5 entries,
+            2773 wiz_defined-function locations,
+            640 strings with 5627 characters,
+and the built_in function-call counts, 2335 in all, are:
+= -- 219
+> -- 108
+< -- 3
++ -- 38
+- -- 33
+* -- 198
+:= -- 368
+add.period$ -- 22
+call.type$ -- 5
+change.case$ -- 25
+chr.to.int$ -- 5
+cite$ -- 10
+duplicate$ -- 97
+empty$ -- 198
+format.name$ -- 38
+if$ -- 483
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 4
+newline$ -- 40
+num.names$ -- 20
+pop$ -- 42
+preamble$ -- 1
+purify$ -- 21
+quote$ -- 0
+skip$ -- 74
+stack$ -- 0
+substring$ -- 114
+swap$ -- 6
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 55
+warning$ -- 0
+while$ -- 21
+width$ -- 0
+write$ -- 85
+(There were 2 error messages)

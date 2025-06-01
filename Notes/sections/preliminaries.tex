@@ -1,0 +1,107 @@
+\section{Preliminaries}
+
+We consider a system made up of $N$ particles, governed by the Hamiltonian
+\begin{align}
+	H = -\sum^N_{1\le j < i} J_{ij} s_i s_j,
+	\label{eq:connected-Hamiltonian}
+\end{align}
+with $J_{ij}$ the elements of a 2-dimensional symmetric matrix, dictating the interaction strength between the particle at the site $i$ and the particle at the site $j$, and $s_i = \pm 1$ the spin of the particle at the site $i$.
+Any two particles interact via a power law
+\begin{align}
+	J_{ij} =  \frac{J_0}{r^{d+\sigma}_{ij}},
+\end{align}
+with $r_{ij} = \abs{\textbf{r}_i - \textbf{r}_j}$, $d$ the spatial dimensions, $J_0$ a positive constant and $\sigma$ a free parameter characterizing the range of the interaction. 
+
+\subsection{The Ising model}
+
+A fundamental quantity in statistical mechanics is the partition function \[
+	Z = \sum_\xi \exp (-\beta E_{\xi}),
+\]
+where the sum is performed over states, $\beta =  \frac{1}{k_B T}$ is the inverse temperature, $k_B$ the Boltzmann coefficient and $E_\xi$ the energy of the state $\xi$. By use of the partition function, one is able to calculate observables e.g. the average energy of the system 
+
+\begin{align}
+	\begin{split}
+	\left< E\right> = 	\sum_\xi E_\xi P_\xi &=  \frac{1}{Z}\sum_\xi E_\xi \exp{(-\beta E_\xi)} \\
+									   &= - \frac{1}{Z} \frac{\partial }{\partial \beta } Z \\
+									   &= - \frac{\partial \ln Z}{\partial \beta},
+	\end{split}
+\end{align}
+where $P_\xi$ is the probability of finding the system in the state $\xi$, with energy $E_\xi$.
+
+The averaging over states is however very computationally expensive, as it is to be summed over the $2^N$ dimensional configuration space. One instead calculates thermal averages by use of an algorithm by \cite{Metropolis1953}, where the thermal average of an observable $A$ is calculated by generating a sequence of $M$ configurations $\{ \xi_1, \ldots, \xi_M \}$ and calculating  
+\begin{align}
+	\left<A \right> = \frac{1}{M} \sum_{m=0}^M A_m.
+\end{align}
+A configuration $\xi_j$  is generated with a probability $\pi_{ij}$ from a configuration $\xi_i$. The algorithm proposed by \cite{Metropolis1953} relies on the sampling of the state $\xi_j$ with an \textit{a priori} probability  $\alpha_{ij}$, and it is accepted with a probability $P_{ij}$. While $\alpha_{ij}$ is set by the system, the acceptance probability is  \begin{align}
+	P_{ij} = 
+	\begin{cases}
+		\exp[-\beta (E_{j}	- E_{i})] & E_j > E_i \\
+		1 & E_j \leq E_i. 
+	\end{cases}
+	\label{eq:acceptance-probability}
+\end{align}
+
+This way, a new state $\xi_j$ is always accepted if it lowers the total energy of the system, but also accepts states of total higher energy with a probability that decreases with the temperature.
+
+The simplest case that allows one to study the formation of spontaneous magnetization of ferromagnetic systems is the Nearest Neighbour Ising Model (NNIM), where only interaction between nearest neighbors is considered. This is modeled by the Hamiltonian
+\begin{align}
+	H  = - J_0 \sum_{\left<ij \right>}^N s_i s_j
+\end{align} 
+Here $\left< ij \right>$ represents summation only over nearest neighbours, and $J_0$ is a real constant. In terms of the Hamiltonian \eqref{eq:connected-Hamiltonian}, 
+\begin{align}
+	J_{ij} = 
+	\begin{cases}
+	J_0 & i ~\& ~j ~\text{neighbors} \\	
+	0 & \text{else}.
+	\end{cases}
+\end{align}
+The Long Range Ising Model (LRIM), described by the Hamiltonian \eqref{eq:connected-Hamiltonian} was studied by \cite{Janke2023}, where the magnetization squared $m^2$ is studied as an order variable. 
+
+For the Ising model, at each iteration $m$, a new state $\xi_{m+1}$ is proposed by flipping the spin at a random site with a probability $\alpha_{ij} = N^{-1}$.  In the NNIM, the change in energy of the total system depends only on the spins at the nearest neighbors of the site $i$, thus of complexity $\mathcal{O}(1)$. By calculating the change in energy, the new configuration $\xi_{m+1}$ is accepted with a probability $P_{ij}$ given by \eqref{eq:acceptance-probability}.
+
+However, the NNIM presents no phase transition \cite{ising1925beitrag} for 1-dimensional spin chains. In order to study the fully connected spin chain with long range interactions \eqref{eq:connected-Hamiltonian}, one needs to compute $\mathcal{O}(N)$ at each time step $t$ of the Metropolis algorithm. In the interest of reducing this computation time, a mode dilution approximation is proposed \textbf{Citation?}.
+
+\subsection{Mode dilution}%
+\label{sub:Mode dilution}
+
+The mode dilution approximation studies the Hamiltonian given by \eqref{eq:connected-Hamiltonian}, by setting all the interaction strengths to a constant $J$, and only allowing $N_l$ pairs of sites to interact\footnote{Thus, $J_{ij}$ will have $2N_l$ non-zero elements.}, any two pair of sites ${ i, j } $ is connected with a probability (without normalising) of $r_{ij}^{-(d+\sigma)}$. Figure \ref{fig:a-partially-connected-graph} displays two examples of partially connected graphs with the same $\sigma= 5$, but $N=N_l=10$ for the left panel, and  $N = N_l = 100$ for the  right panel. Both of these graphs present the same coordination number $$z = 2 \frac{N_l}{N},$$ i.e. the average number of bonds (both in- and outgoing) for each node.
+
+\begin{figure}[t]
+	\begin{subfigure}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{figures/partially-connected-graph-10_points-10_bonds-1.0_sigma.pdf}
+\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{figures/partially-connected-graph-100_points-100_bonds-1.0_sigma.pdf}
+\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{figures/partially-connected-graph-10_points-10_bonds-5.0_sigma.pdf}
+\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{figures/partially-connected-graph-100_points-100_bonds-5.0_sigma.pdf}
+\end{subfigure}
+	\caption{Partially connected graphs of different $N$ and $\sigma$, with constant coordination number $z.$ In the top row, $\sigma = 1$ (long range interactions), and in the bottom row  $\sigma = 5.$ In the left column,  $N=N_l = 10$,  and in the right column $N=N_l = 100.$ Notice how a bigger $\sigma$ approximates the NNIM, whereas lower values of $\sigma$ allows for more long-range interactions, as one would expect.}
+	\label{fig:a-partially-connected-graph}
+\end{figure}
+
+%Simulations of these systems are very computationaly expensive, as at each `time-step', calculations are of complexity $\mathcal{O}(N^2)$. 
+%	A usual simplification of such problems is the Ising model, in wh/kjich the sum in \eqref{eq:connected-Hamiltonian} is performed only over nearest neighbors, which only approximates short-range interactions. The Ising Hamiltonian is \cite{Luijten2006} 
+%\begin{align*}
+%	\mathcal{H}_{\text{Ising}} = - J \sum_{\langle ij \rangle}^{N} s_i s_j
+%,\end{align*}
+%where $J$ is now a constant.
+%This model is in a sense uninteresting, as it has been shown that 1-dimensional spin glasses with finite non-zero $J_{ij}$ (e.g. the Ising model) does not present phase transitions \cite{Rushbrooke_Ursell_1948}. Long range interactions however, have been found to present phase transitions \cite{Kotliar1983}.
+%
+%In order to study long range interactions and avoid the $\mathcal{O}(N^2)$ computational cost of computing every interaction, a dilute spin model is used \cite{Leuzzi2008}.
+%In this model, the interaction $J_{ij}$ is set distance independent, but the probability of having an interaction decays with $
+%	\frac{1}{r^\sigma_{ij}}.$ The coordination number is fixed, and therefore so is the total number of bonds $N_l \leq \frac{N(N-1)}{2}$.
+
+\subsection{Set up}%
+\label{sub:Set up}
+
+We consider a 1-dimensional spin-chain with periodic boundary conditions, in the sense that spins at the boundaries act as if they were nearest neighbours. In this way, the distance between any two nodes $i, j$ is the minimum distance along the circle that joins them, $r_{ij} = \min(\abs{i - j}, \abs{i-j} - N)$.
+
+The units are chosen so that $J_0$ sets the units of energy, and temperature is measured in units of $\frac{J_0}{k_B}$. We set $J_0 = k_B = 1$ for convenience. 

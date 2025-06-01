@@ -17,7 +17,7 @@ Figure \ref{fig:nClusters} displays the change in number of clusters for differe
 
 Figure \ref{fig:clusterLengthDistribution} displays the size distribution of the clusters for different $N_l$, for fixed $N.$ The three panels display the distributions for different values of  $\sigma.$ For visualization purposes, the curves are normalised, since there are less available clusters of length  $N$,  than there are clusters of length 1 (isolated sites), which leading to underrepresentation.
 
-The order parameter of choice is the magnetization $\mu = \sum s_i$ of the spin chain. Figure \ref{fig:magnetization} shows the magnetization of the spin chain, as the Metropolis algorithm advances, with $N = N_l = 4096, \sigma = 0.5$. The top panel shows the magnetization for 50 different starting spin seeds, and the bottom panel presents the averaging of $\mu^2$ across said spin seeds in blue. The curve  $y = 10^{-5.5} x^{1.7} $ is given in red, for reference.
+The order parameter of choice is the magnetization $m = \frac{1}{N}\sum_i s_i $ of the spin chain. Figure \ref{fig:magnetization} shows the magnetization of the spin chain, as the Metropolis algorithm advances, with $N = N_l = 4096, \sigma = 0.5$. The top panel shows the magnetization for 50 different starting spin seeds, and the bottom panel presents the averaging of $^2$ across said spin seeds in blue. The curve  $y = 10^{-5.5} x^{1.7} $ is given in red, for reference.
 
 \begin{figure}
 	\centering
@@ -29,17 +29,17 @@ The order parameter of choice is the magnetization $\mu = \sum s_i$ of the spin 
 \begin{figure}
 		\centering
 		\includegraphics[width=\textwidth]{figures/clusterSizeDistribution.pdf}
-	\caption{Normalized distributions of cluster sizes for fixed number of nodes $N=50$ and  varying $\sigma$ values, as indicated at the top of each panel, for different number of bonds among the nodes, as indicated in the legend of the middle panel.}
+	\caption{Normalized distributions of cluster sizes for fixed number of nodes $N=100$ and  varying $\sigma$ values, as indicated at the top of each panel, for different number of bonds among the nodes, as indicated in the legend of the middle panel.}
 	\label{fig:clusterLengthDistribution}
 \end{figure}
 \begin{figure}[p]
 	\centering
 	\begin{subfigure}{0.8\textwidth}
-	\includegraphics[width=1\textwidth]{figures/magnetization.pdf}
+	\includegraphics[width=1\textwidth]{figures/isingRuns/T_0.1_nPoints_4096_nBonds_4096_sigma_0.2.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.8\textwidth}
-	\includegraphics[width=1\textwidth]{figures/magnetization2.pdf}
+	\includegraphics[width=1\textwidth]{figures/m2Runs/T_0.1_nPoints_4096_nBonds_4096_sigma_0.2.pdf}
 	\end{subfigure}
-	\caption{ Magnetization $\mu$ of the 1-dimensional spin chain with periodic boundary conditions, as iterations of the Metropolis advance, for different spin seeds and the same $J_{ij}$. In the top panel, the magnetization of the spin chain for different starting seeds. In the bottom panel, the magnetization squared, averaged across seeds. The curve $y=10^{-5.5} x^{1.7}$ is shown in red, for reference. Calculations here are done with $N = N_l = 4096, \sigma = 0.5.$}
+	\caption{ Magnetization $m$ of the 1-dimensional spin chain with periodic boundary conditions, as iterations of the Metropolis advance, for different spin seeds and the same $J_{ij}$. In the top panel, the magnetization of the spin chain for different starting seeds and different connectivities $J_{ij}$. In the bottom panel, the magnetization squared, averaged across runs. The curve $y=10^{-5.5} x^{1.7}$ is shown in red, for reference. Calculations here are done with $N = N_l = 4096, \sigma = 0.5.$}
 	\label{fig:magnetization}
 \end{figure}

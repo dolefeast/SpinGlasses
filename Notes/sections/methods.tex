@@ -1,48 +1,48 @@
 \section{Algorithms}
 
-\subsection{Generating the $J_{ij}$}
+\subsection{Generation of the $J_{ij}$}
 
 To simulate the dilute bond approximation, we need an algorithm with which to generate the matrix $J_{ij}$ with non-uniformly distributed non-zero entries.
-an alias algorithm proposed by \cite{Walker1974} is used. This method allows one to sample integers from 1 to $\alpha$ with a non-uniform probability distribution in $\mathcal{O}(1)$ computation complexity with $\mathcal{O}(N)$ memory complexity, by splitting the sampling into sampling a uniformly generated integer from $1$ to  $\alpha$, and then \textit{tossing an unfair coin} with a certain probability, defined by Walker's alias algorithm.
+an alias algorithm proposed by \cite{Walker1974} is used. This method allows one to sample integers from 1 to $\alpha$ with a non-uniform probability distribution in $\mathcal{O}(1)$ computation complexity with $\mathcal{O}(N)$ memory complexity. 
+%by splitting the sampling into sampling a uniformly generated integer from $1$ to  $\alpha$, and then \textit{tossing an unfair coin} with a certain probability, defined by Walker's alias algorithm.
 
 \paragraph{The connection set algorithm}%
 \label{sub:The connection set algorithm}
 
 We will only be interested in the indices $i, j$ for which  $J_{ij}$ is non-zero. Furthermore, since $J_{ij}$ is symmetric, we characterize connections by the (unordered) set data structure $\{i, j\}$.
-The drawn connections $\{ i, j \} $ are stored in another set \texttt{connectionSet}. Since sets are unordered, repeated connections do not change \texttt{connectionSet}, therefore the algorithm proceeds while \texttt{length(connectionSet) < N\_l}. The algorithm to draw random connections is straight-forward: Draw an \textit{uniformly} distributed integer from 1 to N to choose the first particle. The second site $j$ is then chosen by generating a random integer $m \in [1, N-1]$, where the probability $P_m$ of sampling $m$ is  $P_m = m^{-(1+\sigma)}$. 
-
+The drawn connections $\{ i, j \} $ are stored in another set \texttt{connectionSet}. Since sets are unordered, repeated connections do not change \texttt{connectionSet}, therefore the algorithm proceeds while \texttt{length(connectionSet) < N\_l}. The algorithm to draw random connections is straight-forward: Draw an \textit{uniformly} distributed integer from 1 to N to choose the first particle. The second site $j$ is then chosen by generating a random integer $m \in [1, N-1]$, where the probability $P_m$ of sampling $m$ is  $P_m = \min(m, \floor{\frac{N}{2}, N - m})^{-(1+\sigma)}$. 
 
 The sampled connection is thus $\{n, \mod(n+m, N)\}$, where $\{\}$ indicates the data structure \texttt{set}. 
-The use of sets is not only motivated by convenience of the code, but they also present $\mathcal{O}(1)$ lookup time in Julia, as it was tested by a user \cite{setTime}.
+The use of sets is not only motivated by convenience of the code, but they also present $\mathcal{O}(1)$ lookup time in \texttt{julia}, as it was tested by a user \cite{setTime}.
 
-The \texttt{Julia} code used to generate the non-zero $J_{ij}$ is found in Appendix \ref{sec:Code for the connection set method}, and examples of diluted spin models with $N=N_l$ and $\sigma = 5$ are displayed in Figure \ref{fig:a-partially-connected-graph}, with $N=10$ on the left panel and $N=100$ on the right panel.
+The \texttt{julia} code used to generate the non-zero $J_{ij}$ is found in Appendix \ref{sec:Code for the connection set method}, and examples of diluted spin models with $N=N_l$ and $\sigma = 5$ are displayed in Figure \ref{fig:a-partially-connected-graph}, with $N=10$ on the left panel and $N=100$ on the right panel.
 
 
 \subsection{Cluster counting}
 
-Another useful quantity will be the identification of clusters, this is, all simply connected subsets of nodes, either directly or indirectly. This is done by a Depth First Search (DFS) algorithm, which is explained below.
+We will also be interested in the identification of clusters, this is, all simply connected subsets of nodes, either directly or indirectly. This is done by a Depth First Search (DFS) algorithm, which is explained below.
 In order to apply this algorithm, the connections set must be given a new format so that the DFS algorithm can be easier applied. An array \texttt{connectionArray} of $N$ entries is created, where each of its entries is an empty array. The array \texttt{connectionArray[i]} contains the indices of the nodes to which the node \texttt{i} is connected. An example of a \texttt{connecionArray} corresponding to a fully connected graph with $N=4$ is
 \begin{lstlisting}
 connectionArray = [[2,3,4], [1,3,4], [1,2,4], [1,2,3].
 \end{lstlisting}
 
-The DFS algorithm is in the worst case $\mathcal{O}(V + E)$, with V the number of vertices of the graph and E the number of edges (of each cluster).  Two sets are defined
+The DFS algorithm has a worst case complexity $\mathcal{O}(N + N_l)$ \textbf{add citation}, with $N$ the number of vertices of the graph and $N_l$ the number of edges (of each cluster).  Two sets are defined
 \begin{enumerate}
 	\item \texttt{clusters}: The identified clusters
 	\item \texttt{visited}: The visitied nodes
 \end{enumerate}
 
-Starting (arbitrarily) at the first node \texttt{n=1}. Initialize the array \texttt{stack} containing only said node, and an empty set \texttt{cluster}. Then,
+Without loss of generality, we arbitrarily start at  the first node \texttt{n=1}. Initialize the array \texttt{stack} containing only said node, and an empty set \texttt{cluster}. Then,
 \begin{enumerate}
 	\item While the stack is non-empty: pop the stack to the variable \texttt{curr = pop(stack)},
 	\item  If \texttt{curr} is not in \texttt{visited}, add it to \texttt{cluster}, and to the \texttt{visited} set.
-	\item Retrieve the ,,neighbors'' of \texttt{curr} from \texttt{connectionArray[curr]}, and add them to the stack.
+	\item Retrieve the neighbors of \texttt{curr} from \texttt{connectionArray[curr]}, and add them to the stack.
 	\item Repeat step 1.
 \end{enumerate}
 Reaching an empty stack means there are not any more non-visited nodes in the current cluster, and therefore \texttt{cluster} is returned and added to the set \texttt{clusters}.
 This procedure is repeated for every node, if it is not in \texttt{visited}.
 
-The corresponding \texttt{Julia} code can be found in \ref{sub:code for the clustering algorithms}.
+The corresponding \texttt{julia} code can be found in Appendix \ref{sub:code for the clustering algorithms}.
 
 %\subsection{Correlation function}%
 %\label{sub:Correlation function}
@@ -56,10 +56,10 @@ The corresponding \texttt{Julia} code can be found in \ref{sub:code for the clus
 
 Application of the Metropolis algorighm with the current set up is simple. Generate a random \texttt{spinArray} of length $N$ containing only  $1$ or  $-1$. Then,
 \begin{enumerate}
-	\item Choose a site $i$,
+	\item A site \texttt{i} is chosen at random,,
 	\item Calculate the energy change \texttt{E} corresponding to flipping the spin \texttt{spinArray[i]},
-	\item Flip the spin at site $i$ with the probability $P_{ij}$ given by Equation \eqref{eq:microscopic-reversibility}. Now the neighboring spins are \texttt{connectionArray[i]},
+	\item Flip the spin at site $i$ with the probability $P_{ij}$ given by Equation \eqref{eq:acceptance-probability} and with the neighboring spins contained in \texttt{connectionArray[i]},
 	\item Repeat step $1$.
 \end{enumerate}
 
-However, care should be taken in the generation of the $J_{ij}$, as having a too low coordination number avoids the system from being almost fully connected, and prevents phase transitions.
+Care should be taken in the generation of the $J_{ij}$, as having a too low coordination number avoids the system from being almost fully connected, and prevents phase transitions.

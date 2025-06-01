@@ -22,8 +22,34 @@ function mean(arr)
 	return avg	
 end
 
-function std(arr)
-	return sqrt(mean( (arr .- mean(arr)).^2))
+function std(arr, arrmean)
+	return sqrt(mean( (arr .- arrmean).^2))
+end
+
+function arrayStatistics(arr, f=identity)
+	# statistics of a f_m: N -> R, f_m(n) := arr[m][n] for the realization m at index n
+	realizations = length(arr)
+
+	maxN = length(arr[1])
+	meanArr = [ 0. for _ in 1:maxN ]
+	stdArr = [ 0. for _ in 1:maxN ]
+	for n in 1:maxN
+		mean = 0.
+		std = 0.
+		for realization in arr
+			mean += f(realization[n])
+		end
+		mean /= realizations
+		for realization in arr
+			std += (f(realization[n]) - mean) ^2
+		end
+		std = sqrt(std/realizations)
+
+		meanArr[n] = mean
+		stdArr[n] = std
+	end
+
+	return meanArr, stdArr
 end
 
 function circleShape(h, k, r)
@@ -261,24 +287,17 @@ function clusterSizeStatistics(realizations::Int64=100)
 	Calculates the mean and std of the mean of the dstributions of clusterSizes
 	"""
 	# The Maximum cluster size is nPoints
-	lengthDistributionsRealizations = [ [ 0. for _ in 1:realizations ]  for _ in 1:nPoints]
-    averageClusterSize = [ 0. for _ in 1:nPoints ]
-    stdClusterSize = [ 0. for _ in 1:nPoints ]
+	lengthDistributionsRealizations = [ []  for _ in 1:realizations]
 
 	for realization in 1:realizations
 		connections = generateConnectionSet(true)	
 		clusters = clusterIdentification(connections)
-		sizes = clusterSizeDistribution(clusters)	
-		for (index, size) in enumerate(sizes)
-			lengthDistributionsRealizations[index][realization] = size
-		end
+		sizesSet = clusterSizeDistribution(clusters)	
+		
+		lengthDistributionsRealizations[realization] = sizesSet
 	end
 
-	for i in 1:nPoints
-		averageClusterSize[i] = mean(lengthDistributionsRealizations[i])
-		stdClusterSize[i] = std(lengthDistributionsRealizations[i])./sqrt(realizations)
-	end
-	averageClusterSize, stdClusterSize
+	return arrayStatistics(lengthDistributionsRealizations)
 end
 
 function clusterCountStatistics(realizations::Int64=100)
@@ -291,7 +310,9 @@ function clusterCountStatistics(realizations::Int64=100)
 		clusters = clusterIdentification(connections)
 		nClusters[realization] = length(clusters)
 	end # for
-	mean(nClusters), std(nClusters)./sqrt(realizations) 
+
+	_mean = mean(nClusters)
+	mean(nClusters), std(nClusters, _mean)./sqrt(realizations) 
 	end # function
 
 
