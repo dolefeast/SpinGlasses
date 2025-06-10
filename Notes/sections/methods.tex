@@ -15,7 +15,7 @@ The drawn connections $\{ i, j \} $ are stored in another set \texttt{connection
 The sampled connection is thus $\{n, \mod(n+m, N)\}$, where $\{\}$ indicates the data structure \texttt{set}. 
 The use of sets is not only motivated by convenience of the code, but they also present $\mathcal{O}(1)$ lookup time in \texttt{julia}, as it was tested by a user \cite{setTime}.
 
-The \texttt{julia} code used to generate the non-zero $J_{ij}$ is found in Appendix \ref{sec:Code for the connection set method}, and examples of diluted spin models with $N=N_l$ and $\sigma = 5$ are displayed in Figure \ref{fig:a-partially-connected-graph}, with $N=10$ on the left panel and $N=100$ on the right panel.
+The \texttt{julia} code used to generate the non-zero $J_{ij}$ is found in Appendix \ref{sec:Code for the connection set method}, and examples of diluted spin models with $N=N_l$ and $\sigma = 5$ are displayed in Fig. \ref{fig:a-partially-connected-graph}, with $N=10$ on the left panel and $N=100$ on the right panel.
 
 
 \subsection{Cluster counting}
@@ -58,7 +58,7 @@ Application of the Metropolis algorighm with the current set up is simple. Gener
 \begin{enumerate}
 	\item A site \texttt{i} is chosen at random,,
 	\item Calculate the energy change \texttt{E} corresponding to flipping the spin \texttt{spinArray[i]},
-	\item Flip the spin at site $i$ with the probability $P_{ij}$ given by Equation \eqref{eq:acceptance-probability} and with the neighboring spins contained in \texttt{connectionArray[i]},
+	\item Flip the spin at site $i$ with the probability $P_{ij}$ given by Eq. \eqref{eq:acceptance-probability} and with the neighboring spins contained in \texttt{connectionArray[i]},
 	\item Repeat step $1$.
 \end{enumerate}
 

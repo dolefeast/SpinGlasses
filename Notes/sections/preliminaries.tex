@@ -55,7 +55,7 @@ Here $\left< ij \right>$ represents summation only over nearest neighbours, and 
 	0 & \text{else}.
 	\end{cases}
 \end{align}
-The Long Range Ising Model (LRIM), described by the Hamiltonian \eqref{eq:connected-Hamiltonian} was studied by \cite{Janke2023}, where the magnetization squared $m^2$ is studied as an order variable. 
+The long range Ising model (LRIM), described by the Hamiltonian \eqref{eq:connected-Hamiltonian} was studied by \cite{Janke2023}, where the magnetization squared $m^2$ is studied as an order variable. 
 
 For the Ising model, at each iteration $m$, a new state $\xi_{m+1}$ is proposed by flipping the spin at a random site with a probability $\alpha_{ij} = N^{-1}$.  In the NNIM, the change in energy of the total system depends only on the spins at the nearest neighbors of the site $i$, thus of complexity $\mathcal{O}(1)$. By calculating the change in energy, the new configuration $\xi_{m+1}$ is accepted with a probability $P_{ij}$ given by \eqref{eq:acceptance-probability}.
 

@@ -3,7 +3,7 @@
 
 The Ising model \cite{ising1925beitrag} is able to explain the spontaneous magnetization of spin systems by only considering interactions of nearest neighbours. The Metropolis \cite{Metropolis1953} algorithm is used in order to more efficiently probe the $2^N$ dimensional phase space, with $N$ the number of particles.
 
-However, as it is well-known, the 1-dimensional Nearest Neighbour Ising Model presents no phase transition, whereas the consideration of long range interactions in the Long Range Ising Model (LRIM) the critical temperature at which the system becomes ferromagnetic becomes non-zero \cite{Janke2023}.
+However, as it is well-known, the 1-dimensional nearest neighbour Ising model (NNIM) presents no phase transition, whereas the consideration of long range interactions in the long range Ising model (LRIM) the critical temperature at which the system becomes ferromagnetic becomes non-zero \cite{Janke2023}.
 
 Computer simulations of the LRIM are however very computationally expensive, as it requires an $\mathcal{O}(N)$ at each time step $t $.  In order to alleviate this computational cost, we look at the bond dilution approximation. In this approximation, each interaction of strength $r_{ij}^{-(d + \sigma)}$, is modelled as an interaction of strength $1$ (up to changes of units), but with a probability of having an interaction given by  $r_{ij}^{-(d+ \sigma).}$ Here $d$ is the dimension of the space, and  $\sigma$ is a real parameter, which controls the range of the interactions.
 
