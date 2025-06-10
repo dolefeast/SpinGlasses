@@ -5,7 +5,11 @@ version = "0.1.0"
 
 [deps]
 AliasTables = "66dad0bd-aa9a-41b7-9441-69ab47430ed8"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+DataFramesMeta = "1313f7d8-7da2-5740-9ea0-a2ca25f37964"
+Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
 IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 PlotUtils = "995b91a9-d308-5afd-9ec6-746e21dbc043"
@@ -17,7 +21,11 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 AliasTables = "1.1.3"
+CSV = "0.10.15"
 ColorSchemes = "3.29.0"
+DataFrames = "1.7.0"
+DataFramesMeta = "0.15.4"
+Glob = "1.3.1"
 IJulia = "1.27.0"
 LaTeXStrings = "1.4.0"
 PlotUtils = "1.4.3"

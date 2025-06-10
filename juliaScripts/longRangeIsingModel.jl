@@ -1,18 +1,21 @@
-using LaTeXStrings
 using Dates
+using DataFrames
+using CSV
+using LaTeXStrings
 
 function norm(arr) # Calculates L1 norm of an array
     arrNorm = sum(abs.(arr))
     arrNorm
-end;
+end
 
 function coinflip()
     return 2*(rand()>0.5) - 1
 end
 
-function evolveIsing(nCurves, flips, downsizeFactor)
+function evolveIsing(params, nCurves=50, flips=10^5, downsizeFactor=100)
 
-    m = [ [ ] for curve in 1:nCurves]
+    calculations.T, calculations.nPoints, calculations.nBonds, calculations.sigma = params
+    local m = [ [ ] for curve in 1:nCurves]
 
 
     for curve in 1:nCurves # number of monte carlo chains to run
@@ -35,34 +38,15 @@ function evolveIsing(nCurves, flips, downsizeFactor)
         end
 
     end
-    return flipsPlot, m
+    df = DataFrame(collect(eachrow(reduce(hcat, m))), string.(flipsPlot))
+    return df
 end
 
 function msquared(m)
     nCurves = length(m)
 
-    m2Mean = [ 0. for _ in m[1] ]
-    m2STD =  [ 0. for _ in m[1] ]
-
-
-    for flip in 1:length(m[1])
-        mean = 0.
-        stdSquared = 0.
-        for curve in m
-            mean += curve[flip] ^ 2
-        end
-        mean /= nCurves
-        
-        for (i, curve) in enumerate(m)
-            stdSquared += (curve[flip]^2 - mean) ^2
-        end
-        std = sqrt(stdSquared / nCurves)
-        m2Mean[flip] = mean
-        m2STD[flip] = std
-    end
-    m2Mean, m2STD
+    return calculations.arrayStatistics(m)
 end
-#print(2lkjsadf)
 
 function plotIsing(m, flipsPlot)
     p = plot(grid = false) 
@@ -102,4 +86,20 @@ function evolveAndPlot(params, nCurves=50, flips=100000, downsizeFactor=100)
 
     plotIsing(m, flipsPlot)
     plotm2(m2stats, flipsPlot)
+end
+
+# Need: Ising runs for the parameters in params
+nPointsArray = [1024, 4096, 8192, 16384]
+coordNumberArray = [2, 4, 8]
+sigmaArray = [0.2, 0.8, 1.5]
+TArray = [0.1, 0.2]
+
+paramsArray = calculations.IOutils.buildParamsArray(TArray, nPointsArray, coordNumberArray,
+sigmaArray)
+
+for params in paramsArray
+    m = @timed evolveIsing(params)
+    CSV.write("/home/dein/spinGlasses/juliaScripts/results/Ising Runs/$(calculations.IOutils.filename(params...)).csv", m[1])
+    write("/home/dein/spinGlasses/juliaScripts/results/Ising Runs/Time Logs/$(calculations.IOutils.filename(params...)).csv", "Date: $(now()), time elapsed = $(m[2])")
+    
 end

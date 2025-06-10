@@ -1,8 +1,10 @@
 module calculations
 
 include("metropolis.jl")
+include("IOutils.jl")
 
 using .metropolis
+using .IOutils
 
 using AliasTables
 using Plots
@@ -41,9 +43,9 @@ function arrayStatistics(arr, f=identity)
 		end
 		mean /= realizations
 		for realization in arr
-			std += (f(realization[n]) - mean) ^2
+			std += (f(realization[n]) - mean) ^2 # needs to be divided
 		end
-		std = sqrt(std/realizations)
+		std = sqrt(std/(realizations-1)/realizations)
 
 		meanArr[n] = mean
 		stdArr[n] = std
