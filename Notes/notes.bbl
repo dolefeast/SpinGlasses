@@ -1,4 +1,4 @@
-\begin{thebibliography}{7}
+\begin{thebibliography}{5}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -22,14 +22,6 @@ W.~Janke, H.~Christiansen, and S.~Majumder.
 B.~Kamiński, 2022.
 \newblock URL \url{"https://www.juliabloggers.com/set-vs-vector-lookup-in-julia-a-closer-look/}.
 
-\bibitem[Luijten(2006)]{Luijten2006}
-E.~Luijten.
-\newblock \emph{Introduction to Cluster Monte Carlo Algorithms}, pages 13--38.
-\newblock Springer Berlin Heidelberg, Berlin, Heidelberg, 2006.
-\newblock ISBN 978-3-540-35273-0.
-\newblock \doi{10.1007/3-540-35273-2_1}.
-\newblock URL \url{https://doi.org/10.1007/3-540-35273-2_1}.
-
 \bibitem[Metropolis et~al.(1953)Metropolis, Rosenbluth, Rosenbluth, Teller, and Teller]{Metropolis1953}
 N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller.
 \newblock Equation of state calculations by fast computing machines.
@@ -37,13 +29,6 @@ N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller.
 \newblock ISSN 0021-9606.
 \newblock \doi{10.1063/1.1699114}.
 \newblock URL \url{https://doi.org/10.1063/1.1699114}.
-
-\bibitem[Swendsen and Wang(1987)]{PhysRevLett.58.86}
-R.~H. Swendsen and J.-S. Wang.
-\newblock Nonuniversal critical dynamics in monte carlo simulations.
-\newblock \emph{Phys. Rev. Lett.}, 58:\penalty0 86--88, Jan 1987.
-\newblock \doi{10.1103/PhysRevLett.58.86}.
-\newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevLett.58.86}.
 
 \bibitem[Walker(1974)]{Walker1974}
 A.~Walker.

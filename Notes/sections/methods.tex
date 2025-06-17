@@ -1,6 +1,6 @@
 \section{Algorithms}
 
-\subsection{Generation of the $J_{ij}$}
+\subsection{Generating the $J_{ij}$}
 
 To simulate the dilute bond approximation, we need an algorithm with which to generate the matrix $J_{ij}$ with non-uniformly distributed non-zero entries.
 an alias algorithm proposed by \cite{Walker1974} is used. This method allows one to sample integers from 1 to $\alpha$ with a non-uniform probability distribution in $\mathcal{O}(1)$ computation complexity with $\mathcal{O}(N)$ memory complexity. 
@@ -9,8 +9,8 @@ an alias algorithm proposed by \cite{Walker1974} is used. This method allows one
 \paragraph{The connection set algorithm}%
 \label{sub:The connection set algorithm}
 
-We will only be interested in the indices $i, j$ for which  $J_{ij}$ is non-zero. Furthermore, since $J_{ij}$ is symmetric, we characterize connections by the (unordered) set data structure $\{i, j\}$.
-The drawn connections $\{ i, j \} $ are stored in another set \texttt{connectionSet}. Since sets are unordered, repeated connections do not change \texttt{connectionSet}, therefore the algorithm proceeds while \texttt{length(connectionSet) < N\_l}. The algorithm to draw random connections is straight-forward: Draw an \textit{uniformly} distributed integer from 1 to N to choose the first particle. The second site $j$ is then chosen by generating a random integer $m \in [1, N-1]$, where the probability $P_m$ of sampling $m$ is  $P_m = \min(m, \floor{\frac{N}{2}, N - m})^{-(1+\sigma)}$. 
+We will only be interested in the indices $i, j$ for which  $J_{ij}$ is non-zero. Furthermore, since $J_{ij}$ is symmetric, we characterize connections by the (unordered) set $\{i, j\}$.
+The drawn connections $\{ i, j \} $ are stored in another set \texttt{connectionSet}. Since sets are unordered, repeated connections do not change \texttt{connectionSet}, therefore the algorithm proceeds while \texttt{length(connectionSet) < N\_l}. The algorithm to draw random connections is straight-forward: Draw an \textit{uniformly} distributed integer from 1 to N to choose the first particle. The second site $j$ is then chosen by generating a random integer $m \in [1, N-1]$, where the probability $P_m$ of sampling $m$ is  $P_m = \min(m, \lfloor\frac{N}{2}\rfloor, N - m)^{-(1+\sigma)}$. 
 
 The sampled connection is thus $\{n, \mod(n+m, N)\}$, where $\{\}$ indicates the data structure \texttt{set}. 
 The use of sets is not only motivated by convenience of the code, but they also present $\mathcal{O}(1)$ lookup time in \texttt{julia}, as it was tested by a user \cite{setTime}.

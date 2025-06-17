@@ -21,7 +21,7 @@ function buildParamsArray(
                     ((  
                         T,
                         Int(nPoints),
-                        Int(z * nPoints),
+                        Int(floor(z * nPoints)),
                         sigma,
                     ))
                     )

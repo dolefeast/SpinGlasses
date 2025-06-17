@@ -63,7 +63,7 @@ function addCirclePlot(h, k, r)
     """
     Plots a circle of radius r and center at (h, k)
     """
-    return plot!(circleShape(h,k,r), seriestype=[:shape], lw=0.5,
+    return plot!(circleShape(h,k,r), seriestype=[:shape], lw=2,
 		  c = :blue, linecolor = :black, legend=false, fillalpha = 0., aspect_ratio = 1, grid=false, ticks=false, axes=false, axis=([], false))
 end # function
 
@@ -193,8 +193,16 @@ function correlationFunctionStatistics(realizations)
     (averageCorrelationFunction, stdCorrelationFunction)
 end
 
+function whichCluster(node, clusterArray)
+    for (i, cluster) in enumerate(clusterArray)
+            if node in cluster
+            return i
+        end
+    end
+    error("Node was not in the cluster") # This error should never be achieved
+end
 
-function bigPlotFunction(connectionSet )
+function bigPlotFunction(connectionSet, clusterColoring=false)
     """
     Plots connections randomly generated
     """
@@ -202,8 +210,21 @@ function bigPlotFunction(connectionSet )
 	plot!(p, addCirclePlot(0, 0, 1))
     pointsCartesian = drawCircleAndPoints(nPoints)
     bondsCartesian = connectionsCartesian(pointsCartesian, connectionSet)
-    for bond in bondsCartesian
-         p = plot!(p, bond, color= :purple)
+
+    if clusterColoring
+        connectionArray = connectionSetToConnectivityArrayConversion(connectionSet)
+        clusters = clusterIdentification(connectionArray)
+        colors = [ ( "#" * join(rand("ABCDEF0123456789", 6)) ) for _ in clusters ]
+    end
+    for (bondPlot, bond) in zip(bondsCartesian, connectionSet)
+        if clusterColoring
+            node = first(bond) # since bond is a set.
+            colorIndex = whichCluster(node, clusters)
+            color = colors[colorIndex]
+        else
+            color = :purple
+        end
+        p = plot!(p, bondPlot, color=color, linewidth=3)
     end
 	p
 end # function
@@ -313,8 +334,7 @@ function clusterCountStatistics(realizations::Int64=100)
 		nClusters[realization] = length(clusters)
 	end # for
 
-	_mean = mean(nClusters)
-	mean(nClusters), std(nClusters, _mean)./sqrt(realizations) 
+	arrayStatistics(nClusters)
 	end # function
 
 
