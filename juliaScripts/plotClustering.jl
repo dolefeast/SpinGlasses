@@ -50,14 +50,17 @@ nPointsGroupings = groupby(results, :nPoints)
 for fixedNPoints in nPointsGroupings
     sigmaGroupings = groupby(fixedNPoints, :sigma)
     
-    totalPlot = plot(layout = (length(sigmaGroupings),1), size=(900, 1500), bottom_margin=15Plots.mm, grid=false)# , ylims=(0,0.5))
+    totalPlot = plot(layout = (length(sigmaGroupings),1), size=(300, 1500), bottom_margin=15Plots.mm, grid=false)# , ylims=(0,0.5))
 
-    statsPlot = plot(layout = (length(sigmaGroupings),1), size=(900, 1500), bottom_margin=15Plots.mm, grid=false)# , ylims=(0,0.5))
+    statsPlot = plot(layout = (length(sigmaGroupings),1), size=(300, 1500), bottom_margin=15Plots.mm, grid=false)# , ylims=(0,0.5))
+    leftZoom = plot(layout = (length(sigmaGroupings),1), size=(300, 1500), bottom_margin=15Plots.mm, grid=false)# , ylims=(0,0.5))
+    rightZoom = plot(layout = (length(sigmaGroupings),1), size=(300, 1500), bottom_margin=15Plots.mm, grid=false)# , ylims=(0,0.5))
 
     nPoints = fixedNPoints[1, :nPoints]
     for (j, fixedsigma) in enumerate(sigmaGroupings)
+
         sigma = fixedsigma[1, :sigma]
-        nBondsGroupings = groupby(fixedsigma, :nBonds)
+        nBondsGroupings = groupby(sort!(fixedsigma, :nBonds), :nBonds)
 
         for (i, fixedNBonds) in enumerate(nBondsGroupings)
             nBonds = fixedNBonds[1, :nBonds]
@@ -67,22 +70,34 @@ for fixedNPoints in nPointsGroupings
                     for i in 1:size(_clustersizes)[2]]
                 if i%4==0
                     plot!(totalPlot, 
-                    clustersizes, sp=j, legend=false) #,                    legend=L"N_l = $(fixedNBonds[1, :nBonds])",
+                    clustersizes, sp=j, legend=false) #, legend=L"N_l = $(fixedNBonds[1, :nBonds])",
                 end
                 clustersizesStats = calculations.arrayStatistics(clustersizes)
                 norm = sum(clustersizesStats[1])
 
                 plot!(statsPlot, clustersizesStats[1]/norm, ribbon=clustersizesStats[2]/2 / norm, label=L"N_l = %$(nBonds)", sp=j) 
+              
+                fraction  = 10/nPoints
+                leftRegion = 1:Int(floor(nPoints * fraction))
+                rightRegion = Int(floor(nPoints * (1 - fraction))):(nPoints - 1)
+                plot!(leftZoom, (leftRegion, clustersizesStats[1][leftRegion]/norm), ribbon=clustersizesStats[2][leftRegion]/2 / norm, label=L"N_l = %$(nBonds)", sp=j)
+                plot!(rightZoom, (rightRegion, clustersizesStats[1][rightRegion]/norm), ribbon=clustersizesStats[2][rightRegion]/2 / norm, label=L"N_l = %$(nBonds)", sp=j)
                 #legend=L"N_l = %$(nBonds)")
             end
         end
 
 
-        plot!(statsPlot
-, title=L"N = %$(nPoints), σ = %$(sigma)", sp=j, xlabel=L"\textrm{Cluster\ Size}")
-        plot!(totalPlot
-, title=L"N = %$(nPoints), σ = %$(sigma)", sp=j, xlabel=L"\textrm{Cluster\ Size}")
+        plot!(statsPlot,
+ title=L"N = %$(nPoints), \sigma = %$(sigma)", sp=j, xlabel=L"\textrm{Cluster\ Size}")
+        plot!(totalPlot,
+ title=L"N = %$(nPoints), \sigma = %$(sigma)", sp=j, xlabel=L"\textrm{Cluster\ Size}")
+        plot!(leftZoom,
+        title=L"N = %$(nPoints), \sigma = %$(sigma)", sp=j, xlabel=L"\textrm{Cluster\ Size}")
+        plot!(rightZoom,
+        title=L"N = %$(nPoints), \sigma = %$(sigma)", sp=j, xlabel=L"\textrm{Cluster\ Size}")
     end
+    savefig(leftZoom, "/home/dein/spinGlasses/figures/ClusterLengthDistributionWithNBonds/zoom-in/Left/nPoints_$(nPoints).pdf")
+    savefig(rightZoom, "/home/dein/spinGlasses/figures/ClusterLengthDistributionWithNBonds/zoom-in/Right/nPoints_$(nPoints).pdf")
     savefig(statsPlot, "/home/dein/spinGlasses/figures/ClusterLengthDistributionWithNBonds/nPoints_$(nPoints).pdf")
     savefig(totalPlot, "/home/dein/spinGlasses/figures/ClusterLengthDistributionWithNBonds/Before Averaging/nPoints_$(nPoints).pdf")
 end

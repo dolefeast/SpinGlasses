@@ -12,7 +12,7 @@ function coinflip()
     return 2*(rand()>0.5) - 1
 end
 
-function evolveIsing(params, nCurves=50, flips=10^5, downsizeFactor=100)
+function evolveIsing(params, nCurves=50, flips=10^6, downsizeFactor=1000)
 
     calculations.T, calculations.nPoints, calculations.nBonds, calculations.sigma = params
     local m = [ [ ] for curve in 1:nCurves]
